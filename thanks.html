@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thank You – ZapTok Ads</title>
+  <link rel="stylesheet" href="https://cdn.tailwindcss.com">
+</head>
+<body class="bg-slate-50 flex items-center justify-center h-screen">
+  <div class="bg-white shadow-xl rounded-2xl p-10 max-w-lg text-center">
+    <h1 class="text-3xl font-bold mb-4 text-indigo-600">Payment confirmed ✅</h1>
+    <p class="text-lg mb-6">
+      Thanks for booking <span id="package" class="font-semibold">your package</span>.<br>
+      Our AI production line is spinning up & you’ll see first drafts in ✉️ your inbox.
+    </p>
+    <a href="/" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-xl shadow">
+      Back to ZapTok.uk
+    </a>
+  </div>
+  <script>
+    /* Optional: read ?pkg=spark from URL and display */
+    const params = new URLSearchParams(location.search);
+    const pkg = params.get('pkg');
+    if (pkg) document.getElementById('package').textContent = pkg.charAt(0).toUpperCase()+pkg.slice(1);
+  </script>
+</body>
+</html>
