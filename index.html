@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ZapTok Ads – 24‑Hour TikTok Creative</title>
+    <title>Lightning TikTok Ads – 24‑Hour Creative</title>
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-slate-50 text-slate-800 antialiased">
@@ -13,11 +14,11 @@
       <div class="relative max-w-6xl mx-auto px-6 lg:px-8 py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         <div>
           <h1 class="text-4xl md:text-6xl font-extrabold leading-tight text-slate-900 mb-6">
-            ZapTok Ads<br />
-            <span class="text-indigo-600">TikTok videos in 24 hours</span>
+            Lightning TikTok Ads<br />
+            <span class="text-indigo-600">delivered in 24 hours</span>
           </h1>
           <p class="text-lg md:text-xl mb-8 max-w-xl">
-            AI‑powered ad creative that sells. From brief to viral‑ready video in a single day, starting at just <span class="font-semibold">£199</span>.
+            AI‑powered creative that sells. From brief to viral‑ready video in a single day, starting at just <span class="font-semibold">£199</span>.
           </p>
           <a href="#brief" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-4 px-8 rounded-2xl shadow-lg transition">
             Get Started →
@@ -29,7 +30,7 @@
       </div>
     </section>
 
-    <!-- Packages section unchanged except brand name -->
+    <!-- Packages -->
     <section id="packages" class="py-24 bg-white">
       <div class="max-w-6xl mx-auto px-6 lg:px-8">
         <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">
@@ -78,21 +79,25 @@
       </div>
     </section>
 
-    <!-- Brief form -->
+    <!-- Brief form & Image Upload -->
     <section id="brief" class="py-24 bg-slate-100">
       <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center">
         <h2 class="text-3xl md:text-4xl font-bold mb-10">Submit your brief in 3 minutes</h2>
-        
-    <div class="rounded-2xl shadow-2xl ring-1 ring-slate-200 overflow-hidden">
-      <iframe
-        src="https://tally.so/r/3qN9q9?hideTitle=1&transparentBackground=1"
-        class="w-full h-[700px]"
-        frameborder="0"
-        loading="lazy"
-        allow="payment; clipboard-write; autoplay; encrypted-media"
-      ></iframe>
-    </div>
-        
+
+        <!-- Image upload card -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-12">
+          <h3 class="text-2xl font-semibold mb-4">1. Upload reference image</h3>
+          <p class="text-sm text-slate-600 mb-4">Supported aspect‑ratios: <code>0.5 – 2.0 (width ÷ height)</code>. We’ll auto‑crop anything outside that range and show a preview.</p>
+
+          <input id="fileInput" type="file" accept="image/*" class="block w-full text-sm mb-4 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-600 file:text-white hover:file:bg-indigo-700" />
+
+          <div id="ratioMessage" class="text-sm font-medium mb-4"></div>
+
+          <canvas id="previewCanvas" class="mx-auto rounded-xl shadow-lg hidden"></canvas>
+        </div>
+
+        <!-- Existing Typeform embed -->
+        <iframe src="https://yourtypeform.typeform.com/to/ABC123" class="w-full h-[650px] rounded-xl shadow-lg" frameborder="0" allow="camera; microphone; autoplay; encrypted-media;"></iframe>
         <p class="text-sm text-slate-500 mt-4">We start work the moment you hit submit. Expect first drafts in your inbox within 12 hours.</p>
       </div>
     </section>
@@ -101,13 +106,13 @@
     <footer class="bg-slate-900 text-slate-300 py-12">
       <div class="max-w-6xl mx-auto px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
-          <h4 class="text-lg font-semibold mb-4 text-white">ZapTok Ads</h4>
-          <p class="text-sm leading-relaxed">AI‑native micro‑agency creating high‑performance TikTok video in record time.</p>
+          <h4 class="text-lg font-semibold mb-4 text-white">Lightning TikTok Ads</h4>
+          <p class="text-sm leading-relaxed">AI‑native micro‑agency creating high‑performance social video in record time.</p>
         </div>
         <div>
           <h4 class="text-lg font-semibold mb-4 text-white">Contact</h4>
-          <p class="text-sm">hello@zaptok.uk</p>
-          <p class="text-sm">+44 (0)20 3588 7890</p>
+          <p class="text-sm">hello@lightningads.uk</p>
+          <p class="text-sm">+44 (0)20 8089 1234</p>
         </div>
         <div>
           <h4 class="text-lg font-semibold mb-4 text-white">Follow</h4>
@@ -118,11 +123,65 @@
           </ul>
         </div>
       </div>
-      <div class="mt-8 text-center text-xs text-slate-500">© <span id="year"></span> ZapTok Ltd. All rights reserved.</div>
+      <div class="mt-8 text-center text-xs text-slate-500">© <span id="year"></span> Lightning Ads Ltd. All rights reserved.</div>
     </footer>
 
     <script>
+      // Update copyright year automatically
       document.getElementById("year").textContent = new Date().getFullYear();
+
+      const fileInput = document.getElementById("fileInput");
+      const ratioMessage = document.getElementById("ratioMessage");
+      const previewCanvas = document.getElementById("previewCanvas");
+      const ctx = previewCanvas.getContext("2d");
+
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const img = new Image();
+        img.onload = () => {
+          const w = img.width;
+          const h = img.height;
+          const ratio = w / h;
+
+          let cropX = 0, cropY = 0, cropW = w, cropH = h;
+          let message = "✅ Aspect‑ratio OK (“ + ratio.toFixed(2) + ")";
+          let messageClass = "text-green-600";
+
+          if (ratio < 0.5) {
+            // too tall → crop height to fit 0.5
+            cropH = Math.floor(w / 0.5);
+            cropY = Math.floor((h - cropH) / 2);
+            message = "⚠️ Image is too tall (" + ratio.toFixed(2) + "). Cropped to 0.5.";
+            messageClass = "text-orange-600";
+          } else if (ratio > 2.0) {
+            // too wide → crop width to fit 2.0
+            cropW = Math.floor(h * 2.0);
+            cropX = Math.floor((w - cropW) / 2);
+            message = "⚠️ Image is too wide (" + ratio.toFixed(2) + "). Cropped to 2.0.";
+            messageClass = "text-orange-600";
+          }
+
+          // Draw cropped image to canvas with target 1280:768 (≈1.67) or keep original ratio inside range
+          const targetRatio = 1280 / 768;
+          let drawW = 512; // preview size
+          let drawH = Math.round(drawW / targetRatio);
+
+          previewCanvas.width = drawW;
+          previewCanvas.height = drawH;
+          ctx.drawImage(img, cropX, cropY, cropW, cropH, 0, 0, drawW, drawH);
+
+          previewCanvas.classList.remove("hidden");
+          ratioMessage.textContent = message;
+          ratioMessage.className = "mb-4 text-sm font-medium " + messageClass;
+        };
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          img.src = evt.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
     </script>
   </body>
 </html>
