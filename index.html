@@ -34,31 +34,33 @@
     <!-- ... existing packages markup ... -->
 
     <!-- Brief form with Tally embed -->
-<!-- Tally embed: Lightning TikTok Ads brief -->
-<!-- Tally embed: Lightning TikTok Ads brief -->
-<iframe data-tally-src="https://tally.so/embed/3qN9q9?hideTitle=1&alignLeft=1&transparentBackground=1&dynamicHeight=1"
-        loading="lazy"
-        width="100%"
-        height="650"
-        class="w-full rounded-xl shadow-lg"
-        frameborder="0"
-        marginheight="0"
-        marginwidth="0"
-        title="Lightning Ads Creative Brief"></iframe>
+<!-- ▶︎ Brief submission (centred box) -->
+<section id="brief" class="py-24 bg-slate-50">
+  <div class="max-w-3xl mx-auto px-6">
+    <iframe
+      data-tally-src="https://tally.so/embed/3qN9q9?hideTitle=1&alignLeft=1&transparentBackground=1&dynamicHeight=1"
+      loading="lazy"
+      class="w-full rounded-xl shadow-lg"
+      height="650"
+      frameborder="0"
+      marginheight="0"
+      marginwidth="0"
+      title="Lightning Ads Creative Brief"></iframe>
+
+    <p class="text-sm text-slate-500 mt-4 text-center">
+      We start work the moment you hit&nbsp;submit. Expect first drafts in your inbox within&nbsp;12&nbsp;hours.
+    </p>
+  </div>
+</section>
 
 <script>
-  /* Loads the Tally embed script once and wires up dynamic height */
-  (function (d, w, s) {
-    const v = () => {
-      if (typeof Tally !== 'undefined') { Tally.loadEmbeds(); return; }
-      d.querySelectorAll('iframe[data-tally-src]:not([src])')
-        .forEach(el => el.src = el.dataset.tallySrc);
-    };
-    if (d.querySelector(`script[src="${s}"]`)) return v();
+  /* One‑time Tally embed loader (place just once per page, ideally before </body>) */
+  (function (d, s) {
+    if (d.querySelector(`script[src="${s}"]`)) return;
     const js = d.createElement('script');
-    js.src = s; js.onload = v; js.onerror = v;
+    js.src = s; js.onload = () => Tally?.loadEmbeds();
     d.body.appendChild(js);
-  })(document, window, 'https://tally.so/widgets/embed.js');
+  })(document, 'https://tally.so/widgets/embed.js');
 </script>
 
 <p class="text-sm text-slate-500 mt-4">
